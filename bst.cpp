@@ -21,7 +21,7 @@ struct treenode
     treenode * left;
     treenode * right;
 };
-
+//methods
 void add(treenode* head);
 void rem(treenode* head);
 bool search(treenode* head);
@@ -37,10 +37,10 @@ int main()
     char input [4];
     treenode * start = new treenode();
     
-    while (!done)
+    while (!done)//running loop
     {
         cout << "Type 'a' to add a number, 'r' to remove a number, 'v' to visualize the tree, 's' to search for a number, or 'e' to exit." << endl;
-        cin >> input;
+        cin >> input;//get user input
         if(input[0] == 'a')
         {
             add(start);
@@ -77,7 +77,7 @@ int main()
     return 0;
 }
 
-void vis(treenode* head)
+void vis(treenode* head)//prints out entire tree
 {
   treenode* curr = new treenode();
   treenode* prev = new treenode();
@@ -86,17 +86,17 @@ void vis(treenode* head)
   
 }
 
-void print(treenode* c)
+void print(treenode* c)//print current node and its children
 {
 
 }
 
-void add(treenode* head)
+void add(treenode* head)//add a node to the tree
 {
     int num1 = getNum();
     bool numplaced = false;
     
-    if (head->num == NULL)//start node
+    if (head->num == NULL)//if start node
     {
         head->num = num1;
         //cout << head->num << endl;
@@ -140,15 +140,15 @@ void add(treenode* head)
     }
 }
 
-void rem(treenode* head)
+void rem(treenode* head)//remove a number from the tree
 {
-    int num2 = getNum();
+  int num2 = getNum();
     
     bool located = false;
     treenode* current = new treenode();
     current = head;
     
-    while (!located)
+    while (!located)//find number we need to remove in this loop
         {
             if (current->right == NULL && current->left == NULL)
             {
@@ -181,11 +181,11 @@ void rem(treenode* head)
             }
         }
         
-        if (!located)
+    if (!located)//if the loop runs and the number was not found
         {
             cout << "Number not found." << endl;
         }
-        else
+    else//number was found
         {
             if (current-> left != NULL && current->right != NULL)//two children
             {
@@ -309,7 +309,7 @@ int findclosest(treenode* curr)//determines whether to go right (1) or left(2) o
 }
 
 
-bool search(treenode* head)
+bool search(treenode* head)//finds the number in the tree
 {
     bool success = false;
     int num3 = getNum();
@@ -356,7 +356,7 @@ bool search(treenode* head)
     return success;
 }
 
-int getNum()
+int getNum()//get input
 {
     int num4;
     cout << "Enter the number you would like to add/remove/search for." << endl;
