@@ -79,27 +79,16 @@ int main()
 
 void vis(treenode* head)
 {
-  treenode* l = new treenode();
-  treenode*r = new treenode();
-  cout << "Example: (leftchild)Number(rightchild)" << endl;
+  treenode* curr = new treenode();
+  treenode* prev = new treenode();
 
-  cout << "-------------------" << endl;
-  cout << "(";
-  cout << head->left->num;
-  cout << ")";
-  cout << head->num;
-  cout << "(";
-  cout << head->right->num;
-  cout << ")" << endl;
-  cout << "-------------------" << endl;
-  //display to left
-  l = head->left;
   
   
-  
-  //display to right
-  r = head->right;
-  
+}
+
+void print(treenode* c)
+{
+
 }
 
 void add(treenode* head)
