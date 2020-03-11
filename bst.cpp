@@ -28,6 +28,8 @@ bool search(treenode* head);
 int getNum();
 int findclosest(treenode* curr);
 
+void vis(treenode* head);
+
 int main()
 {
     cout<<"Binary Search Tree" << endl;
@@ -37,7 +39,7 @@ int main()
     
     while (!done)
     {
-        cout << "Type 'a' to add a number, 'r' to remove a number, 's' to search for a number, or 'e' to exit." << endl;
+        cout << "Type 'a' to add a number, 'r' to remove a number, 'v' to visualize the tree, 's' to search for a number, or 'e' to exit." << endl;
         cin >> input;
         if(input[0] == 'a')
         {
@@ -47,6 +49,10 @@ int main()
         {
             rem(start);
         }
+	else if(input[0] == 'v')
+        {
+	  vis(start);
+	}
         else if(input[0] == 's')
         {
             if (search(start))
@@ -71,6 +77,31 @@ int main()
     return 0;
 }
 
+void vis(treenode* head)
+{
+  treenode* l = new treenode();
+  treenode*r = new treenode();
+  cout << "Example: (leftchild)Number(rightchild)" << endl;
+
+  cout << "-------------------" << endl;
+  cout << "(";
+  cout << head->left->num;
+  cout << ")";
+  cout << head->num;
+  cout << "(";
+  cout << head->right->num;
+  cout << ")" << endl;
+  cout << "-------------------" << endl;
+  //display to left
+  l = head->left;
+  
+  
+  
+  //display to right
+  r = head->right;
+  
+}
+
 void add(treenode* head)
 {
     int num1 = getNum();
@@ -79,7 +110,7 @@ void add(treenode* head)
     if (head->num == NULL)//start node
     {
         head->num = num1;
-        cout << head->num << endl;
+        //cout << head->num << endl;
     }
     else
     {
@@ -90,7 +121,7 @@ void add(treenode* head)
         
         while (!numplaced)
         {
-            cout << current->num << endl;
+	  //cout << current->num << endl;
             if ( (num1 > current->num) && (current->right == NULL) )
             {
                 current->right = node_to_place;
@@ -169,67 +200,76 @@ void rem(treenode* head)
         {
             if (current-> left != NULL && current->right != NULL)//two children
             {
-                if (findclosest(current) == 1)//we need to go right
+                if (findclosest(current) == 1)//we need to go right.NOTWORKING
                 {
                     treenode* original = new treenode();
                     original = current;
                     
                     current = current->right;
-                    while (current->left->left !=NULL)
+                    while (current->left !=NULL)
                     {
                         current = current->left;
                     }
+
+                    original->num = current->num;
+		    delete current;
                     
-                    original->num = current->left->num;
-                    
-                    treenode* temp = new treenode();
-                    temp = current->left;
-                    current->left = NULL;
-                    delete temp;
                    
                 }
-                else if (findclosest(current) == 2)//we need to go left
+                else if (findclosest(current) == 2)//we need to go left.NOTWORKING
                 {
                     treenode* original = new treenode();
                     original = current;
                     
                     current = current->left;
-                    while (current->right->right !=NULL)
-                    {
-                        current = current->right;
-                    }
-                    
-                    original->num = current->right->num;
-                    
-                    treenode* temp = new treenode();
-                    temp = current->right;
-                    current->right = NULL;
-                    delete temp;
-                    
-                }
-                else if (findclosest(current) == 3)//the things are equal
-                {
-                    treenode* original = new treenode();
-                    original = current;
-                    
-                    treenode* left = new treenode();
-                    left = current->left;
-                    
-                    //create temp holder for left children, set right child equal to original, attach temp to left most child or new original
-                    current = current->right;
                     while (current->right !=NULL)
                     {
                         current = current->right;
                     }
+                    
+                    original->num = current->num;
+		    delete current;
+                    
+                }
+                else if (findclosest(current) == 3)//the things are equal. NOT WORKING
+                {
+                    treenode* original = new treenode();
+                    original = current;
+                    
+                    //create temp holder for left children, set right child equal to original, attach temp to left most child or new original. edit: This comment is stupid
+                    current = current->right;
+
+		    //cout << "HELP ME!!!" << endl;
+                    while (current->left !=NULL)
+                    {
+                        current = current->left;
+                    }
+		    original->num = current->num;
+		    delete current;
                 }
             }
             else if (current->left == NULL && current-> right != NULL)//only a child on the right
             {
-                
+	      treenode* original = current;
+	      current = current->right;
+	      while (current->left != NULL)
+		{
+		  current = current->left;
+		}
+	      original->num = current->num;
+	      delete current;
             }
             else if (current->left != NULL && current-> right == NULL)//only a child on the left
             {
-                
+	      treenode* original = current;
+	      current = current->left;
+	      while (current->right != NULL)
+		{
+		  current = current->right;
+		}
+
+	      original->num = current->num;
+	      delete current;
             }
             else//both children dont exist
             {
@@ -258,11 +298,11 @@ int findclosest(treenode* curr)//determines whether to go right (1) or left(2) o
     curr2 = curr2->left;
     while (curr2->right != NULL)
     {
-        curr = curr->right;
+        curr2 = curr2->right;
     }
     
     diff2 = orig - curr2->num;//calc how far this number was from orig
-    
+
     if (diff1 < diff2)//we should go right
     {
         orig = 1;//orig is repurposed here
