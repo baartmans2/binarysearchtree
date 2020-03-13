@@ -1,15 +1,3 @@
-/******************************************************************************
-
-                              Online C++ Compiler.
-               Code, Compile, Run and Debug C++ program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
-//binary search tree
-//raymond baartmans
-//3/9/2020
-
 #include <iostream>
 
 using namespace std;
@@ -27,8 +15,8 @@ void rem(treenode* head);
 bool search(treenode* head);
 int getNum();
 int findclosest(treenode* curr);
-
-void vis(treenode* head);
+void print(treenode* head, int thenum);
+void vis(treenode* startn);
 
 int main()
 {
@@ -37,7 +25,7 @@ int main()
     char input [4];
     treenode * start = new treenode();
     
-    while (!done)//running loop
+    while (!done)//running loop WORKING
     {
         cout << "Type 'a' to add a number, 'r' to remove a number, 'v' to visualize the tree, 's' to search for a number, or 'e' to exit." << endl;
         cin >> input;//get user input
@@ -51,8 +39,8 @@ int main()
         }
 	else if(input[0] == 'v')
         {
-	  vis(start);
-	}
+	        vis(start);
+	    }
         else if(input[0] == 's')
         {
             if (search(start))
@@ -77,21 +65,44 @@ int main()
     return 0;
 }
 
-void vis(treenode* head)//prints out entire tree
+void print(treenode* head, int thenum)//function to print out the nodes in tree form on console. WORKING 
 {
-  treenode* curr = new treenode();
-  treenode* prev = new treenode();
+    // Base case  
+    if (head == NULL)  
+    {
+        return;  
+    }
+    //this is used to space out the tree. 
+    if (head->num != 0)
+    {
+        thenum += 10;  
+    }
+  
+    print(head->right, thenum);  
+  
+    cout<<endl;  
+    
+    if (head-> num != 0)
+    {
+        for (int i = 10; i < thenum; i++)  
+        {
+            cout<<" ";  
+        }
+    
+        cout<<head->num <<"\n";  
+    }
+    
 
-  
-  
+    print(head->left, thenum);  
+
 }
 
-void print(treenode* c)//print current node and its children
+void vis(treenode* startn)
 {
-
+    print(startn, 0);//print out the tree WORKING
 }
 
-void add(treenode* head)//add a node to the tree
+void add(treenode* head)//add a node to the tree WORKING
 {
     int num1 = getNum();
     bool numplaced = false;
@@ -115,15 +126,18 @@ void add(treenode* head)//add a node to the tree
             {
                 current->right = node_to_place;
                 numplaced = true;
+                cout << "Number added." << endl;
             }
             else if ( (num1 < current->num) && (current->left == NULL) )
             {
                 current->left = node_to_place;
                 numplaced = true;
+                cout << "Number added." << endl;
             }
             else if (num1 == current->num)
             {
                 numplaced = true;
+                cout << "This number is already in the tree." << endl;
             }
             else
             {
@@ -140,7 +154,7 @@ void add(treenode* head)//add a node to the tree
     }
 }
 
-void rem(treenode* head)//remove a number from the tree
+void rem(treenode* head)//remove a number from the tree WORKING
 {
   int num2 = getNum();
     
@@ -187,9 +201,10 @@ void rem(treenode* head)//remove a number from the tree
         }
     else//number was found
         {
+            cout << "Delete complete." << endl; 
             if (current-> left != NULL && current->right != NULL)//two children
             {
-                if (findclosest(current) == 1)//we need to go right.NOTWORKING
+                if (findclosest(current) == 1)//we need to go right.WORKING
                 {
                     treenode* original = new treenode();
                     original = current;
@@ -205,7 +220,7 @@ void rem(treenode* head)//remove a number from the tree
                     
                    
                 }
-                else if (findclosest(current) == 2)//we need to go left.NOTWORKING
+                else if (findclosest(current) == 2)//we need to go left.WORKING
                 {
                     treenode* original = new treenode();
                     original = current;
@@ -220,7 +235,7 @@ void rem(treenode* head)//remove a number from the tree
 		    delete current;
                     
                 }
-                else if (findclosest(current) == 3)//the things are equal. NOT WORKING
+                else if (findclosest(current) == 3)//the things are equal. WORKING
                 {
                     treenode* original = new treenode();
                     original = current;
@@ -359,8 +374,7 @@ bool search(treenode* head)//finds the number in the tree
 int getNum()//get input
 {
     int num4;
-    cout << "Enter the number you would like to add/remove/search for." << endl;
+    cout << "Enter the number you would like to add/remove/search for. Range is 1-1000." << endl;
     cin >> num4;
     return num4;
 }
-
